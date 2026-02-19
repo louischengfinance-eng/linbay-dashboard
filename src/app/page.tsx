@@ -222,7 +222,7 @@ export default function Dashboard() {
                 <CartesianGrid stroke={T.borderLight} vertical={false} />
                 <XAxis dataKey="d" stroke="transparent" fontSize={9} tick={{ fill: T.t3 }} tickLine={false} axisLine={false} dy={4} />
                 <YAxis stroke="transparent" fontSize={9} tick={{ fill: T.t3 }} tickLine={false} axisLine={false} tickFormatter={(v: number) => `${v.toFixed(0)}%`} />
-                <Tooltip content={<ChartTip />} />
+                <Tooltip content={<ChartTip />} cursor={{ stroke: 'rgba(255,255,255,0.15)', strokeWidth: 1 }} />
                 <Area type="monotone" dataKey="bPct" name="Balance %" stroke={T.line} strokeWidth={1.5} fill="url(#gL)" dot={false}
                       activeDot={{ r: 3, fill: T.line, stroke: T.surface, strokeWidth: 2 }} />
                 <Area type="monotone" dataKey="ePct" name="Equity %" stroke={T.t3} strokeWidth={1} fill="none" dot={false} strokeDasharray="3 3" opacity={0.4} />
@@ -237,7 +237,7 @@ export default function Dashboard() {
                 <CartesianGrid stroke={T.borderLight} vertical={false} />
                 <XAxis dataKey="d" stroke="transparent" fontSize={9} tick={{ fill: T.t3 }} tickLine={false} axisLine={false} dy={4} />
                 <YAxis stroke="transparent" fontSize={9} tick={{ fill: T.t3 }} tickLine={false} axisLine={false} tickFormatter={(v: number) => `${(v/1000).toFixed(0)}k`} />
-                <Tooltip content={<ChartTip />} />
+                <Tooltip content={<ChartTip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
                 <Bar dataKey="pnl" name="P&L" radius={[3, 3, 0, 0]} maxBarSize={24}>
                   {dpl.map((d: any, i: number) => <Cell key={i} fill={d.pnl >= 0 ? T.green : T.red} fillOpacity={0.65} />)}
                 </Bar>
