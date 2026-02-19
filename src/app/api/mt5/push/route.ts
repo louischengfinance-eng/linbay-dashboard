@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { kvSet, kvAppendDaily } from "@/lib/kv";
 
-const AUTH_TOKEN = process.env.MT5_AUTH_TOKEN || "nexus2026";
+const AUTH_TOKEN = (process.env.MT5_AUTH_TOKEN || "nexus2026").trim();
 
 export async function POST(req: NextRequest) {
   const auth = req.headers.get("authorization");
