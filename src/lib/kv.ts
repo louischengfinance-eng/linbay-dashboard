@@ -1,9 +1,13 @@
 /**
- * KV abstraction: uses Vercel KV when available, falls back to local filesystem.
+ * KV abstraction: uses Upstash Redis when available, falls back to local filesystem.
  */
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
-const USE_KV = !!process.env.KV_REST_API_URL;
+const KV_URL = process.env.KV_REST_API_URL || process.env.STORAGE_REST_API_URL;
+const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.STORAGE_REST_API_TOKEN;
+const USE_KV = !!(KV_URL && KV_TOKEN);
+
+const kv = USE_KV ? new Redis({ url: KV_URL!, token: KV_TOKEN! }) : (null as any);
 
 // --- Filesystem fallback ---
 async function fsGet(key: string): Promise<any> {
@@ -47,7 +51,7 @@ async function fsSet(key: string, value: any): Promise<void> {
 
 // --- Public API ---
 export async function kvGet<T = any>(key: string): Promise<T | null> {
-  if (USE_KV) return kv.get<T>(key);
+  if (USE_KV) return kv.get(key) as Promise<T | null>;
   return fsGet(key) as Promise<T | null>;
 }
 
@@ -63,7 +67,7 @@ export async function kvSet(key: string, value: any): Promise<void> {
 export async function kvAppendDaily(date: string, entry: any): Promise<void> {
   const key = `mt5:daily:${date}`;
   if (USE_KV) {
-    const existing = (await kv.get<any[]>(key)) || [];
+    const existing = ((await kv.get(key)) as any[] | null) || [];
     existing.push(entry);
     await kv.set(key, existing);
     return;
