@@ -3,11 +3,11 @@
  */
 import { Redis } from "@upstash/redis";
 
-const KV_URL = process.env.KV_REST_API_URL || process.env.STORAGE_REST_API_URL;
-const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.STORAGE_REST_API_TOKEN;
+const KV_URL = (process.env.KV_REST_API_URL || process.env.STORAGE_KV_REST_API_URL || "").trim();
+const KV_TOKEN = (process.env.KV_REST_API_TOKEN || process.env.STORAGE_KV_REST_API_TOKEN || "").trim();
 const USE_KV = !!(KV_URL && KV_TOKEN);
 
-const kv = USE_KV ? new Redis({ url: KV_URL!, token: KV_TOKEN! }) : (null as any);
+const kv = USE_KV ? new Redis({ url: KV_URL, token: KV_TOKEN }) : (null as any);
 
 // --- Filesystem fallback ---
 async function fsGet(key: string): Promise<any> {
