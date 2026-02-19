@@ -180,6 +180,19 @@ export default function LoginPage() {
                 mode === "login" ? "Sign In" : "Create Account"
               )}
             </button>
+
+            {/* Guest login */}
+            {mode === "login" && (
+              <button type="button"
+                onClick={() => {
+                  localStorage.setItem("nexus_auth", JSON.stringify({ user: "guest", ts: Date.now(), guest: true }));
+                  router.push("/");
+                }}
+                className="w-full h-10 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98] hover:brightness-125"
+                style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${T.border}`, color: T.t2 }}>
+                Continue as Guest
+              </button>
+            )}
           </form>
         </div>
 
